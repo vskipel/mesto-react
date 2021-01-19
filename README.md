@@ -2,4 +2,4 @@
 
 Использован функциональный подход.
 
-Ссылка на ghpages [http://localhost:3000](http://localhost:3000) 
+Ссылка на ghpages [https://vskipel.github.io/mesto-react/](https://vskipel.github.io/mesto-react/) 

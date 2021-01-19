@@ -41,21 +41,20 @@ function App() {
     
     ImagePopupIsOpen("popup_opened")
     selectedCardData(card)
-    console.log(selectedCard)
   }
 
   return (
-    <body className="page">
+    <div className="page">
 
         <Header />
         <Main onEditAvatar={handleEditAvatarClick} onAddPlace={handleAddPlaceClick} onEditProfile={handleEditProfileClick} onCardClick={handleCardClick}/> 
 
         <PopupWithForm name={'edit-profile'} title='Редактировать профиль' isOpen={isEditProfilePopupOpen} children={
           <>
-            <input maxlength="40" minlength="2" className="popup__item popup__item-name" type="text" name="name" value=""
+            <input maxLength="40" minLength="2" className="popup__item popup__item-name" type="text" name="name" 
               placeholder="Ваше имя" required aria-label="попап форма" />
             <span className="error" id="name-error"></span>
-            <input maxlength="200" minlength="2" className="popup__item popup__item-job" type="text" name="job" value=""
+            <input maxLength="200" minLength="2" className="popup__item popup__item-job" type="text" name="job" 
               placeholder="Род деятельности" required aria-label="попап форма" />
             <span className="error" id="job-error"></span>
           </>
@@ -63,10 +62,10 @@ function App() {
 
         <PopupWithForm name={'add-card'} title='Новое место' isOpen={isAddPlacePopupOpen} children={
           <>
-            <input maxlength="30" minlength="1" className="popup__item popup__item-place" type="text" name="name" value=""
+            <input maxLength="30" minLength="1" className="popup__item popup__item-place" type="text" name="name" 
               placeholder="Название" required aria-label="попап форма" />
             <span className="error" id="name-error"></span>
-            <input className="popup__item popup__item-link" type="url" name="link" value="" placeholder="Ссылка на картинку"
+            <input className="popup__item popup__item-link" type="url" name="link" placeholder="Ссылка на картинку"
               required aria-label="попап форма" />
             <span className="error" id="link-error"></span>
           </>
@@ -74,7 +73,7 @@ function App() {
 
         <PopupWithForm name={'update-avatar'} title='Обновить аватар' isOpen={isEditAvatarPopupOpen} children={
           <>
-            <input className="popup__item popup__item-link" type="url" name="link" value="" placeholder="Ссылка на аватар"
+            <input className="popup__item popup__item-link" type="url" name="link" placeholder="Ссылка на аватар"
               required aria-label="попап форма" />
             <span className="error" id="link-error"></span>
           </>
@@ -89,12 +88,12 @@ function App() {
         <div className="popup__container">
           <button className="popup__close-icon" type="button" aria-label="Закрыть"></button>
           <h2 className="popup__title">Вы уверены?</h2>
-          <form className="form" method="GET" action="#" name="confirm" novalidate><button className="popup__save-button"
+          <form className="form" method="GET" action="#" name="confirm" noValidate><button className="popup__save-button"
             type="submit" aria-label="Да">Да</button></form>
         </div>
       </div>
 
-    </body>
+    </div>
   );
 }
 

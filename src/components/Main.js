@@ -32,8 +32,6 @@ function Main(props) {
       })))})
       
   }, [])
-  
-  
 
   return (
     <>
@@ -44,11 +42,10 @@ function Main(props) {
         <div className="profile__avatar-edit" onClick={props.onEditAvatar}></div>
         <div className="profile-info">
           <h1 className="profile-info__title">{userName}</h1>
-          <button type="button" className="edit-button" onClick={props.onEditProfile}></button>
+          <button type="button" className="edit-button" onClick={props.onEditProfile}/>
           <p className="profile-info__subtitle">{userDescription}</p>
         </div>
-
-        <button type="button" className="add-button" onClick={props.onAddPlace}></button>
+        <button type="button" className="add-button" onClick={props.onAddPlace}/>
       </section>
 
       <ul className="cards">

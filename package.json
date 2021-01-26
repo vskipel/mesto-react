@@ -1,6 +1,8 @@
 {
   "name": "mesto-react",
   "version": "0.1.0",
+  "author": "Anton Khomchenko",
+  "description": "SPA on sights of Russia. Powered by React.",
   "private": true,
   "homepage": "./",
   "dependencies": {

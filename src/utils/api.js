@@ -47,22 +47,22 @@ export class Api {
   }
 
 
-  likeCard(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
-      method: "PUT",
-      headers: {
-        authorization: this._token,
-      },
-    }).then(handleOriginalResponse);
-  }
-
-  removeLikeCard(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: this._token,
-      },
-    }).then(handleOriginalResponse);
+  changeLikeCardStatus(id, isLiked) {
+    if (!isLiked) {
+      return fetch(`${this._url}/cards/likes/${id}`, {
+        method: "PUT",
+        headers: {
+          authorization: this._token,
+        },
+      }).then(handleOriginalResponse);
+    } else {
+      return fetch(`${this._url}/cards/likes/${id}`, {
+        method: "DELETE",
+        headers: {
+          authorization: this._token,
+        },
+      }).then(handleOriginalResponse);
+    }
   }
 
   updateAvatar(link) {
@@ -73,7 +73,7 @@ export class Api {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          avatar: link,
+          avatar: link.avatar,
         }),
       })
       .then(handleOriginalResponse);
@@ -98,7 +98,7 @@ export class Api {
       },
       body: JSON.stringify({
         name: data.name,
-        about: data.job
+        about: data.about
       })
     }).then(handleOriginalResponse);
   }

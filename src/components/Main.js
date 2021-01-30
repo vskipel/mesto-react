@@ -7,6 +7,8 @@ function Main(props) {
   // подписываемся на контекст о пользователе хуком 
   const currentUser = React.useContext(CurrentUserContext);
 
+
+
   return (
     <>
     <main className="main">
@@ -24,9 +26,9 @@ function Main(props) {
 
       <ul className="cards">
         {
-          props.cards.map((card, index) => <Card 
-            key={index} 
-            id={card.id} 
+          props.cards.map((card) => <Card 
+            key={card._id} 
+            _id={card._id} 
             name={card.name} 
             link={card.link} 
             likes={card.likes} 

@@ -19,11 +19,6 @@ function EditProfilePopup(props){
     setDescription(e.target.value);
   }
 
-  React.useEffect(() => {
-    const isNameFilled = name;
-    console.log(isNameFilled)
-  }, [name]); 
-
   // После загрузки текущего пользователя из API
   // его данные будут использованы в управляемых компонентах.
   React.useEffect(() => {

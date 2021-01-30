@@ -3,7 +3,6 @@ import CurrentUserContext from '../context/CurrentUserContext'
 
 
 function Card(props) {
-
   // подписываемся на контекст о пользователе хуком 
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -12,7 +11,7 @@ function Card(props) {
 
   // Создаём переменную, которую после зададим в `className` для кнопки удаления
   const cardDeleteButtonClassName = (
-    `card__button-delete ${isOwn ? 'card__button-delete_visible' : ' '}`
+    `card__button-delete ${isOwn ? 'card__button-delete_visible' : ''}`
   ); 
 
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
@@ -23,23 +22,19 @@ function Card(props) {
     `card__button-like ${isLiked ? 'card__button-like_active' : 'card__button-like'}`
   ); ; 
   
-
   function handleClick() {
     props.onCardClick(props);
-    
   } 
 
   function handleLikeClick() {
     props.onCardLike(props);
-    
   } 
 
   function handleDeleteClick() {
     props.onCardDelete(props);
-  } 
+  }   
 
   return (
-
     <li className="card">
       <button className={cardDeleteButtonClassName} type="button" aria-label="Удалить" onClick={handleDeleteClick}></button>
       <img className="card__image" src={props.link} alt={props.name} onClick={handleClick}/>

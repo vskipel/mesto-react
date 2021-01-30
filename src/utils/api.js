@@ -48,7 +48,7 @@ export class Api {
 
 
   changeLikeCardStatus(id, isLiked) {
-    if (!isLiked) {
+    if (isLiked) {
       return fetch(`${this._url}/cards/likes/${id}`, {
         method: "PUT",
         headers: {

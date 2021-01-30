@@ -12,21 +12,21 @@ import AddPlacePopup from '../components/AddPlacePopup'
 function App() {
 
   // устанавливаем стейты для попапов
-  const  [isEditProfilePopupOpen, profilePopupIsOpen] = React.useState('');
-  const  [isAddPlacePopupOpen, placePopupIsOpen] = React.useState('');
-  const  [isEditAvatarPopupOpen, avatarPopupIsOpen] = React.useState('');
+  const  [isEditProfilePopupOpen, profilePopupIsOpen] = React.useState(false);
+  const  [isAddPlacePopupOpen, placePopupIsOpen] = React.useState(false);
+  const  [isEditAvatarPopupOpen, avatarPopupIsOpen] = React.useState(false);
 
   // обработчики открытия попапов
   const handleEditAvatarClick = () => {
-    avatarPopupIsOpen("popup_opened");
+    avatarPopupIsOpen(true);
   };
 
   const handleEditProfileClick = () => {
-    profilePopupIsOpen("popup_opened");
+    profilePopupIsOpen(true);
   };
 
   const handleAddPlaceClick =() => {
-    placePopupIsOpen("popup_opened");
+    placePopupIsOpen(true);
   }
   // обработчик закрытия попапов
   const closeAllPopups = () => {
@@ -34,27 +34,27 @@ function App() {
     profilePopupIsOpen("");
     placePopupIsOpen("");
     imagePopupIsOpen("");
-    selectedCardData([]);
+    selectedCardData({});
   }
 
   
   // стейты для открытия попапов карточек
-  const  [selectedCard, selectedCardData] = React.useState([]);
-  const  [isImagePopupOpen, imagePopupIsOpen] = React.useState('');
+  const  [selectedCard, selectedCardData] = React.useState({});
+  const  [isImagePopupOpen, imagePopupIsOpen] = React.useState(false);
 
   const handleCardClick = (card) => {
-    
-    imagePopupIsOpen("popup_opened")
+    imagePopupIsOpen(true)
     selectedCardData(card)
   }
 
   // стейт для определения пользоателя
-  const [currentUser, currentUserUpdate] = React.useState([]);
+  const [currentUser, currentUserUpdate] = React.useState({});
   React.useEffect(() => {
     api.getProfileInfo()
       .then(data => {
         currentUserUpdate(data);
       })
+      .catch((err) => 'Ошибка: ' + err)
   }, [])
 
   function handleUpdateUser(data) {
@@ -63,6 +63,7 @@ function App() {
         currentUserUpdate(res);
         closeAllPopups();
       })
+      .catch((err) => 'Ошибка: ' + err);
 
   }
 
@@ -73,6 +74,7 @@ function App() {
         currentUserUpdate(res);
         closeAllPopups();
       })
+      .catch((err) => 'Ошибка: ' + err)
   }
 
   // получаем инфу о карточках
@@ -82,53 +84,63 @@ function App() {
     api.getInitialCards()
       .then(data => {
         setCards(data.map((item) => ({
-          id: item._id,
+          _id: item._id,
           link: item.link,
           likes: item.likes,
           name: item.name,
           owner: item.owner
       })))})
+      .catch((err) => 'Ошибка: ' + err)
       
   }, [])
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(liker => liker._id === currentUser._id);
+    
     
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card.id, isLiked).then((newCard) => {
+    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
 
     // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-    const newCards = cards.map((c) => c.id === card.id ? newCard : c);
-    console.log(card.owner._id)
+    const newCards = cards.map((oldCard) => {
+      if (oldCard._id === card._id) { 
+        return newCard
+      } 
+        else {
+          return  oldCard
+        }
+    });
     
     // Обновляем стейт
     setCards(newCards);
-    });
+    })
+    .catch((err) => 'Ошибка: ' + err)
   } 
 
   function handleCardDelete(card) {
     // Снова проверяем владельца карточки
     const isOwn = card.owner._id === currentUser._id;
-    console.log(isOwn)
-    console.log(card.id)
-  
+
     // Отправляем запрос в API на удаление карточки
-    api.deleteCard(card.id).then((newCard) => {
+    api.deleteCard(card._id).then(() => {
   
-      // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-      const newCardsReduced = cards.filter((c) => c.id !== card.id);
+      // Формируем новый массив на основе имеющегося, удаляя из него карточку
+      const newCardsReduced = cards.filter((c) => c._id !== card._id);
       
       // Обновляем стейт
       setCards(newCardsReduced);
-    });
+    })
+    .catch((err) => 'Ошибка: ' + err)
   } 
 
   function handleAddPlaceSubmit(data) {
-    api.addCard(data).then((newCard) => {
-      setCards([newCard, ...cards]); 
-    })
-    closeAllPopups();
+    api.addCard(data)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups(); 
+      })
+      .catch((err) => 'Ошибка: ' + err)
   }
 
 
@@ -167,15 +179,6 @@ function App() {
           card={selectedCard} />
 
         <Footer /> 
-
-      <div className="popup popup_type_confirm">
-        <div className="popup__container">
-          <button className="popup__close-icon" type="button" aria-label="Закрыть"/>
-          <h2 className="popup__title">Вы уверены?</h2>
-          <form className="form" method="GET" action="#" name="confirm" noValidate><button className="popup__save-button"
-            type="submit" aria-label="Да">Да</button></form>
-        </div>
-      </div>
       
     </div>
     </CurrentUserContext.Provider>
